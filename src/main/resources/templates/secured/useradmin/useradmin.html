@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizza Delivery System - Sign In</title>
+    <link rel="icon" href="/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+<main>
+    <h1>Sign In</h1>
+    <div style="border: 1px solid;padding: 1em;">
+        <div>
+            Fields marked with asterisk (*) are required.
+        </div>
+        <form method="post" action="/pizzamgm/api/v1/public/auth/login" th:object="${userAuthRequest}">
+<!--            <input type="hidden" th:value="${userAuthResponse.jwtToken()}" />-->
+<!--            <div th:if="${param.error}">-->
+<!--                <div class="alert alert-danger">-->
+<!--                    Invalid username and password.-->
+<!--                </div>-->
+<!--            </div>-->
+            <fieldset>
+                <div>
+                    <label>Username*</label>
+                </div>
+                <div>
+                    <div><span th:if="${#fields.hasErrors('username')}" th:errors="*{username()}" style="color:red;"></span></div>
+                    <input name="username" type="text" th:value="${userAuthRequest.username()}" autofocus>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <label>Password*</label>
+                </div>
+                <div>
+                    <input name="password" type="password" th:value="${userAuthRequest.password()}">
+                </div>
+            </fieldset>
+            <div style="margin-top: 1em;">
+                <a class="std-lnk-btn" href="/pizzamgm/home">Cancel</a>
+                <input class="std-btn" type="reset" value="Reset">
+                <input class="std-btn" type="submit" value="Sign In">
+            </div>
+        </form>
+    </div>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

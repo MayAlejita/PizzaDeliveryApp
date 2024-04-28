@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jimmy Pizza System - System Administration - Edit Pizza</title>
+    <link rel="icon" href="/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main>
+    <h1>Edit Pizza Form</h1>
+    <div style="border: 1px solid;padding: 1em;">
+        <div>
+            Fields marked with asterisk (*) are required.
+        </div>
+        <form method="post" action="/pizzamgm/api/v1/customers/update" th:object="${customer}">
+            <input name="customerId" type="hidden" th:value="${customer.customerId()}">
+            <fieldset>
+                <div>
+                    <label>First Name*</label>
+                </div>
+                <div>
+                    <input name="firstName" type="text" th:value="*{firstName()}" autofocus>
+                </div>
+                <div>
+                    <label>Last Name*</label>
+                </div>
+                <div>
+                    <input name="lastName" type="text" th:value="*{lastName()}">
+                </div>
+                <div>
+                    <label>Birth Date*</label>
+                </div>
+                <div>
+                    <input name="birthDate" type="date" th:value="*{birthDate()}">
+                </div>
+                <div>
+                    <label>Phone Number*</label>
+                </div>
+                <div>
+                    <input name="phoneNumber" type="text" th:value="*{phoneNumber()}">
+                </div>
+                <div>
+                    <label>Email</label>
+                </div>
+                <div>
+                    <input name="email" type="text" th:value="*{email()}">
+                </div>
+                <br>
+            </fieldset>
+            <fieldset>
+                <h3>Address:</h3>
+                <br>
+                <div>
+                    <label>Street*</label>
+                </div>
+                <div>
+                    <input name="street" type="text" th:value="*{address().street()}">
+                </div>
+                <div>
+                    <label>City*</label>
+                </div>
+                <div>
+                    <input name="city" type="text" th:value="*{address().city()}">
+                </div>
+                <div>
+                    <label>State*</label>
+                </div>
+                <div>
+                    <input name="state" type="text" th:value="*{address().state()}">
+                </div>
+                <div>
+                    <label>Zip Code</label>
+                </div>
+                <div>
+                    <input name="zipCode" type="text" th:value="*{address().zipCode()}">
+                </div>
+            </fieldset>
+            <div style="margin-top: 1em;">
+                <a class="std-lnk-btn" href="/pizzamgm/api/v1/pizzas">Cancel</a>
+                <input class="std-btn" type="reset" value="Reset">
+                <input class="std-btn" type="submit" value="Update Pizza">
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

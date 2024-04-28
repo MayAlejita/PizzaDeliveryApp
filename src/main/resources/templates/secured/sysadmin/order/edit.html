@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jimmy Pizza System - System Administration - Edit Order</title>
+    <link rel="icon" href="/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main>
+    <h1>Edit Order Form</h1>
+    <div style="border: 1px solid;padding: 1em;">
+        <div>
+            Fields marked with asterisk (*) are required.
+        </div>
+        <form method="post" action="/pizzamgm/api/v1/orders/update" th:object="${order}">
+            <input name="orderNumber" type="hidden" th:value="${order.orderNumber()}">
+            <fieldset>
+                <div>
+                    <label>Order Status*</label>
+                </div>
+                <div>
+                    <select name="status" th:value="${order.status()}">
+                        <option th:value="'REQUESTED'" th:text="REQUESTED"></option>
+                        <option th:value="'IN-PROGRESS'" th:text="IN-PROGRESS"></option>
+                        <option th:value="'OUT-OF-DELIVERY'" th:text="OUT-OF-DELIVERY"></option>
+                        <option th:value="'DELIVERY'" th:text="DELIVERY"></option>
+                        <option th:value="'CANCELED'" th:text="CANCELED"></option>
+                    </select>
+                </div>
+                <div>
+                    <label>Order Date*</label>
+                </div>
+                <div>
+                    <input name="orderDate" type="datetime-local" th:value="${order.orderDate()}">
+                </div>
+                <div>
+                    <label>Total Price*</label>
+                </div>
+                <div>
+                    <input name="totalPrice" type="text" th:value="${order.totalPrice()}">
+                </div>
+                <div>
+                    <label>Order Lines</label>
+                </div>
+                <div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Pizza Name</th>
+                            <th>Pizza Type</th>
+                            <th>Pizza Size</th>
+                            <th>Quantity</th>
+                            <th>Total Price Items</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr name="orderLines" th:each="orderLine, counter : ${order.orderLines()}">
+                            <td name="orderLineId" th:text="${orderLine.orderLineId}"></td>
+                            <td>
+                                <select name="name" th:value="${orderLine.pizza().name()}">
+                                    <option th:each="pizza : ${allPizzas}"
+                                            th:value="${pizza.name()}"
+                                            th:text="${pizza.name()}">
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="type" th:value="${orderLine.pizza().type()}">
+                                    <option th:each="pizza : ${allPizzas}"
+                                            th:value="${pizza.type()}"
+                                            th:text="${pizza.type()}">
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="size" th:value="${orderLine.pizza().size()}">
+                                    <option th:each="pizza : ${allPizzas}"
+                                            th:value="${pizza.size()}"
+                                            th:text="${pizza.size()}">
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <input name="quantity" type="number" th:value="${orderLine.quantity()}">
+                            </td>
+                            <td th:text="${#numbers.formatCurrency(orderLine.price() * orderLine.quantity())}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+            <div style="margin-top: 1em;">
+                <a class="std-lnk-btn" href="/pizzamgm/api/v1/orders">Cancel</a>
+                <input class="std-btn" type="reset" value="Reset">
+                <input th:if="${order.orderLines()!= null}" class="std-btn" type="submit" value="Update Order">
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

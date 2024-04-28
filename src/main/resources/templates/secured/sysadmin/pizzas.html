@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jimmy Pizza System - System Administration - Pizzas</title>
+    <link rel="icon" href="/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main>
+    <h1>System Administration</h1>
+    <nav>
+        <a href="/pizzamgm/api/v1/orders">Manage Pizza Orders</a> |
+        <a href="/pizzamgm/api/v1/customers">Manage Customers</a> |
+        <a href="/pizzamgm/api/v1/pizzas">Manage Pizzas</a>
+    </nav>
+    <h2>List of our Pizzas</h2>
+    <div>
+        <p><a href="/pizzamgm/api/v1/pizzas/new">Add New Pizza</a></p>
+    </div>
+    <table class="data-grid">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Pizza Name</th>
+            <th>Pizza Type</th>
+            <th>Pizza Size</th>
+            <th>Pizza Price</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="pizza, counter : ${pizzas}">
+            <th th:text="${pizza.pizzaId()}"></th>
+            <td th:text="${pizza.name()}"></td>
+            <td th:text="${pizza.type()}"></td>
+            <td th:text="${pizza.size()}"></td>
+            <td th:text="${pizza.price()}"></td>
+            <td><a th:href="@{'/pizzamgm/api/v1/pizzas/edit/{pizzaId}'(pizzaId=${pizza.pizzaId()})}">Edit</a></td>
+            <td><a th:href="@{'/pizzamgm/api/v1/pizzas/delete/{pizzaId}'(pizzaId=${pizza.pizzaId()})}">Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

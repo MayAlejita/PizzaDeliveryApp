@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jimmy Pizza System - Home</title>
+    <link rel="icon" href="/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<!--    <p th:object="${userAuthResponse}"></p>-->
+<!--    <div>-->
+<!--      <input name="firstName" type="text" th:value="${userAuthResponse.firstName()}">-->
+<!--    </div>-->
+<header th:replace="~{fragments/header :: header}"></header>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" th:replace="~{fragments/navbar :: navbar}"></nav>
+<main>
+    <h1>Welcome to the Jimmy Pizza Order System</h1>
+    <hr/>
+    <div>
+        <img id="banner-img" th:src="@{/images/pizzaOther.png}" alt="Pizza Photo">
+    </div>
+    <div style="font-size: 1em">
+        We are a top-flight system to order your pizza. Find out more <a href="/pizzamgm/about">about us</a> and learn
+        how
+        we can serve you with a widest variety of pizzas and have lots of fun experience while order our pizzas.
+        <br/><br/>
+    </div>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

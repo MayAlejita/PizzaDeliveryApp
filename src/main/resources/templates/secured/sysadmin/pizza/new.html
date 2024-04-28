@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jimmy Pizza System - System Administration - Pizzas</title>
+    <link rel="icon" href="/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+<main>
+    <h1>New Pizza Form</h1>
+    <div style="border: 1px solid;padding: 1em;">
+        <div>
+            Fields marked with asterisk (*) are required.
+        </div>
+        <form method="post" action="/pizzamgm/api/v1/pizzas/add" th:object="${pizza}" >
+            <fieldset>
+                <div>
+                    <label>Pizza Name*</label>
+                </div>
+                <div>
+                    <input name="name" type="text" th:value="*{name()}" autofocus>
+                </div>
+                <div>
+                    <label>Pizza Type*</label>
+                </div>
+                <div>
+                    <select name="type" th:value="*{type()}">
+                        <option th:value="'CHICAGO-STYLE'" th:text="CHICAGO-STYLE"></option>-->
+                        <option th:value="'DETROIT-STYLE'" th:text="DETROIT-STYLE"></option>
+                        <option th:value="'NORMAL'" th:text="NORMAL"></option>
+                    </select>
+                </div>
+                <div>
+                    <label>Pizza Size*</label>
+                </div>
+                <div>
+                    <select name="size" th:value="*{size()}">
+                        <option th:value="'SMALL'" th:text="SMALL"></option>-->
+                        <option th:value="'MEDIUM'" th:text="MEDIUM"></option>
+                        <option th:value="'LARGE'" th:text="LARGE"></option>
+                        <option th:value="'EXTRA-LARGE'" th:text="EXTRA-LARGE"></option>
+                    </select>
+                </div>
+                <div>
+                    <label>Pizza Price*</label>
+                </div>
+                <div>
+                    <input name="price" type="text" th:value="*{price()}">
+                </div>
+                <div>
+                    <label>Pizza Additional Details</label>
+                </div>
+                <div>
+                    <input name="details" type="text" th:value="*{additionalDetails()}">
+                </div>
+            </fieldset>
+            <div style="margin-top: 1em;">
+                <a class="std-lnk-btn" href="/pizzamgm/api/v1/pizzas">Cancel</a>
+                <input class="std-btn" type="reset" value="Reset">
+                <input class="std-btn" type="submit" value="Add Pizza">
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

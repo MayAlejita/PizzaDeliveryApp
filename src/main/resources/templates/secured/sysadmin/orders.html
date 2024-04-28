@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jimmy Pizza System - System Administration - Orders</title>
+    <link rel="icon" href="/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main>
+    <h1>System Administration</h1>
+    <nav>
+        <a href="/pizzamgm/api/v1/orders">Manage Pizza Orders</a> |
+        <a href="/pizzamgm/api/v1/customers">Manage Customers</a> |
+        <a href="/pizzamgm/api/v1/pizzas">Manage Pizzas</a>
+    </nav>
+    <h2>List of our Orders</h2>
+    <div>
+        <p><a href="/pizzamgm/api/v1/orders/new">Add New Order</a></p>
+    </div>
+    <section>
+        <table class="data-grid">
+            <thead>
+            <tr>
+                <th>Order Number</th>
+                <th>Status</th>
+                <th>Order Date</th>
+                <th>Total Price</th>
+                <th>Order Lines</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order, counter : ${orders}">
+                <th th:text="${order.orderNumber()}"></th>
+                <td th:text="${order.status()}"></td>
+                <td th:text="${order.orderDate()}"></td>
+                <td th:text="'$'+${order.totalPrice()}"></td>
+                <td>
+                    <table class="customize">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Quantity</th>
+                            <th>Pizza Name</th>
+                            <th>Pizza Type</th>
+                            <th>Pizza Size</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="orderLine, counter : ${order.orderLines()}">
+                            <td th:text="${orderLine.orderLineId()}"></td>
+                            <td th:text="${orderLine.quantity()}"></td>
+                            <td th:text="${orderLine.pizza().name()}"></td>
+                            <td th:text="${orderLine.pizza().type()}"></td>
+                            <td th:text="${orderLine.pizza().size()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <!--                <td><a th:if="${order.status() == 'REQUESTED'}"-->
+                <td><a
+                        th:href="@{'/pizzamgm/api/v1/orders/edit/{orderId}'(orderId=${order.orderNumber()})}">Edit</a>
+                    <!--                    <a th:if="${order.status() != 'REQUESTED'}">Edit</a>-->
+                </td>
+                <td><a th:if="${order.status() == 'REQUESTED'}"
+                       th:href="@{'/pizzamgm/api/v1/orders/delete/{orderId}'(orderId=${order.orderNumber()})}">Delete</a>
+                    <a th:if="${order.status() != 'REQUESTED'}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
