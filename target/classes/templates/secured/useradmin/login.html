@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+<main>
+    <h1>List of our Publishers</h1>
+    <div>
+        <p><a href="/fairfieldlibrary/publisher/new">Add New Publisher</a></p>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Publisher Name</th>
+            <th>Primary Address</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="publisher, counter : ${publishers}">
+            <th th:text="${counter.count}+${'.'}"></th>
+            <td th:text="${publisher.name}"></td>
+            <td th:if="${publisher.primaryAddress != null}">
+                <p>
+                    <span th:text="${publisher.primaryAddress.street}"></span><br>
+                    <span th:text="${publisher.primaryAddress.city}+${', '}+${publisher.primaryAddress.state}+${' '}+${publisher.primaryAddress.zipCode}"></span>
+                </p>
+                <a th:href="@{'/fairfieldlibrary/publisher/primaryAddress/delete/{publisherId}'(publisherId=${publisher.publisherId})}">
+                    Delete Address
+                </a> <!--Done: Implemented this feature -->
+            </td>
+            <td th:if="${publisher.primaryAddress == null}"></td>
+            <td><a th:href="@{'/fairfieldlibrary/publisher/edit/{publisherId}'(publisherId=${publisher.publisherId})}">Edit</a>
+            </td>
+            <td>
+                <a th:href="@{'/fairfieldlibrary/publisher/delete/{publisherId}'(publisherId=${publisher.publisherId})}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>

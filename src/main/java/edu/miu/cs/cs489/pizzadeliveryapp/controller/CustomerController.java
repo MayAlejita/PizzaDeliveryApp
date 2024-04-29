@@ -51,6 +51,8 @@ public class CustomerController {
         var modelAndView = new ModelAndView();
         var newCustomer = new CustomerRequest(null,null,null,null,null,null,
                 new AddressRequest(null,null,null,null,null));
+//        var newAddress = new AddressRequest(null,null,null,null,null);
+//        model.addAttribute("address", newAddress);
         model.addAttribute("customer", newCustomer);
         modelAndView.setViewName("secured/sysadmin/customer/new");
         return modelAndView;
@@ -59,6 +61,7 @@ public class CustomerController {
     @PostMapping("/add")
     public ModelAndView addNewOCustomer(@Valid @ModelAttribute CustomerRequest customerRequest){
         var modelAndView = new ModelAndView();
+        System.out.println(customerRequest);
         customerService.addCustomer(customerRequest);
         var customers = customerService.getAllCustomer();
         modelAndView.addObject("customers", customers);
@@ -75,6 +78,8 @@ public class CustomerController {
     public ModelAndView displayEditCustomerForm(@PathVariable Integer customerId) throws CustomerNotFoundException {
         var modelAndView = new ModelAndView();
         var customer = customerService.getCustomerById(customerId);
+        var newAddress = customer.address();
+        modelAndView.addObject("address", newAddress);
         modelAndView.addObject("customer", customer);
         modelAndView.setViewName("secured/sysadmin/customer/edit");
         return modelAndView;
@@ -83,7 +88,7 @@ public class CustomerController {
     @PostMapping("/update")
     public ModelAndView updateCustomerById(@Valid @ModelAttribute CustomerRequest customerRequest) throws CustomerNotFoundException {
         var modelAndView = new ModelAndView();
-        customerService.updateCustomerById(customerRequest.customerId(), customerRequest);
+        customerService.updateCustomerById(customerRequest.getCustomerId(), customerRequest);
         var customers = customerService.getAllCustomer();
         modelAndView.addObject("customers", customers);
         modelAndView.setViewName("secured/sysadmin/customers");

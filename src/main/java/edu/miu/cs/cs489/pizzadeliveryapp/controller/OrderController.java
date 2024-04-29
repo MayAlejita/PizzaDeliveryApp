@@ -37,7 +37,7 @@ public class OrderController {
         this.pizzaService = pizzaService;
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public ModelAndView listOrders(){
         var modelAndView = new ModelAndView();
         var orders = orderService.getAllOrders();

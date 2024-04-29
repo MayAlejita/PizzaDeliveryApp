@@ -1,0 +1,13 @@
+The system should allow users to be able to Sign-in
+The system should be to allow Customer order pizza.
+The system should be to allow Customer see the status of the order with the order number.
+
+The manager can list/create/update/delete the details of pizza.
+The system should be to allow Manager register new customers.
+The system should be to allow Manager list/update/delete customers.
+The system should be to allow Manager create a new order by Customer.
+The system should be to allow Customer update/cancel the order if the order has the status REQUESTED.
+The system should be to allow Manager to list ordered pizzas by status or the most ordered pizzas.
+The system should be to allow Manager update the order status.
+The system should be to allow Receptionist create an order for the Customer.
+The system should be to allow Receptionist update the order status.
