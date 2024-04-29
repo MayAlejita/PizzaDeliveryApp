@@ -27,7 +27,7 @@ public class CustomerServiceImplTest extends PizzaDeliveryAppApplicationTests {
 
     @Test
     public void testGetCustomerById() throws CustomerNotFoundException {
-        Integer customerId = 2;
+        Integer customerId = 1;
         CustomerResponse customer = customerService.getCustomerById(customerId);
 
         Assert.assertNotNull("Failure: expected customer to be not null", customer);
