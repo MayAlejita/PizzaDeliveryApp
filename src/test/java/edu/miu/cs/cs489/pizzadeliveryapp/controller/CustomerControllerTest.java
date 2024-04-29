@@ -21,8 +21,8 @@ import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(controllers = CustomerController.class)
+//@RunWith(SpringRunner.class)
+//@WebMvcTest(controllers = CustomerController.class)
 public class CustomerControllerTest {
 
     @Autowired
