@@ -2,19 +2,23 @@ package edu.miu.cs.cs489.pizzadeliveryapp.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record OrderRequest(
-        Long orderNumber,
+@Data
+@AllArgsConstructor
+public class OrderRequest{
+        private Long orderNumber;
         @NotNull(message = "orderDate shouldn't be null")
-        LocalDateTime orderDate,
+        private LocalDateTime orderDate;
         @NotBlank(message = "status shouldn't be blank")
-        String status,
+        private String status;
         @NotNull(message = "totalPrice shouldn't be null")
-        Double totalPrice,
+        private Double totalPrice;
         @NotNull(message = "orderLine shouldn't be null")
-        List<OrderLineRequest> orderLines
-) {
+        private List<OrderLineRequest> orderLines;
+
 }

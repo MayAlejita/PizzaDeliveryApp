@@ -21,13 +21,13 @@
             Fields marked with asterisk (*) are required.
         </div>
         <form method="post" action="/pizzamgm/api/v1/orders/update" th:object="${order}">
-            <input name="orderNumber" type="hidden" th:value="${order.orderNumber()}">
+            <input name="orderNumber" type="hidden" th:value="${order.getOrderNumber()}">
             <fieldset>
                 <div>
                     <label>Order Status*</label>
                 </div>
                 <div>
-                    <select name="status" th:value="${order.status()}">
+                    <select name="status" th:value="${order.getStatus()}">
                         <option th:value="'REQUESTED'" th:text="REQUESTED"></option>
                         <option th:value="'IN-PROGRESS'" th:text="IN-PROGRESS"></option>
                         <option th:value="'OUT-OF-DELIVERY'" th:text="OUT-OF-DELIVERY"></option>
@@ -39,18 +39,19 @@
                     <label>Order Date*</label>
                 </div>
                 <div>
-                    <input name="orderDate" type="datetime-local" th:value="${order.orderDate()}">
+                    <input name="orderDate" type="datetime-local" th:value="${order.getOrderDate()}">
                 </div>
                 <div>
                     <label>Total Price*</label>
                 </div>
                 <div>
-                    <input name="totalPrice" type="text" th:value="${order.totalPrice()}">
+                    <input name="totalPrice" type="text" th:value="${order.getTotalPrice()}">
                 </div>
+                <br>
                 <div>
-                    <label>Order Lines</label>
+                    <h3>Order Lines:</h3>
                 </div>
-                <div>
+                <div class="table-responsive update-orderLine">
                     <table>
                         <thead>
                         <tr>
@@ -59,14 +60,19 @@
                             <th>Pizza Type</th>
                             <th>Pizza Size</th>
                             <th>Quantity</th>
+                            <th>Price Item</th>
                             <th>Total Price Items</th>
+                            <th>
+                                <button type="button" name="addOrderLine" data-update-orderLine-url="/addOrderLine"
+                                       >Add Item</button>
+                            </th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr name="orderLines" th:each="orderLine, counter : ${order.orderLines()}">
-                            <td name="orderLineId" th:text="${orderLine.orderLineId}"></td>
+                        <tbody id="tblOrderLine">
+                        <tr th:each="orderLine, counter : ${order.getOrderLines()}">
+                            <td th:text="${order.getOrderLines().get(__${counter.index}__).getOrderLineId()}"></td>
                             <td>
-                                <select name="name" th:value="${orderLine.pizza().name()}">
+                                <select name="name" th:value="${order.getOrderLines().get(__${counter.index}__).getPizza().name()}">
                                     <option th:each="pizza : ${allPizzas}"
                                             th:value="${pizza.name()}"
                                             th:text="${pizza.name()}">
@@ -74,7 +80,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select name="type" th:value="${orderLine.pizza().type()}">
+                                <select name="type" th:value="${order.getOrderLines().get(__${counter.index}__).getPizza().type()}">
                                     <option th:each="pizza : ${allPizzas}"
                                             th:value="${pizza.type()}"
                                             th:text="${pizza.type()}">
@@ -82,7 +88,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select name="size" th:value="${orderLine.pizza().size()}">
+                                <select name="size" th:value="${order.getOrderLines().get(__${counter.index}__).getPizza().size()}">
                                     <option th:each="pizza : ${allPizzas}"
                                             th:value="${pizza.size()}"
                                             th:text="${pizza.size()}">
@@ -90,18 +96,25 @@
                                 </select>
                             </td>
                             <td>
-                                <input name="quantity" type="number" th:value="${orderLine.quantity()}">
+                                <input name="quantity" type="number" th:value="${order.getOrderLines().get(__${counter.index}__).getQuantity()}"/>
                             </td>
-                            <td th:text="${#numbers.formatCurrency(orderLine.price() * orderLine.quantity())}"></td>
+                            <td th:text="${#numbers.formatCurrency(order.getOrderLines().get(__${counter.index}__).pizza.price())}"></td>
+                            <td th:text="${#numbers.formatCurrency(order.getOrderLines().get(__${counter.index}__).getPrice())}"></td>
+                            <td>
+                                <div>
+                                    <button type="button" name="removeOrderLine" th:value="${counter.index}" data-update-orderLine-url="/removeOrderLine">Remove Item</button>
+                                </div>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
+                <br>
             </fieldset>
             <div style="margin-top: 1em;">
                 <a class="std-lnk-btn" href="/pizzamgm/api/v1/orders/list">Cancel</a>
                 <input class="std-btn" type="reset" value="Reset">
-                <input th:if="${order.orderLines()!= null}" class="std-btn" type="submit" value="Update Order">
+                <input th:if="${order.getOrderLines()!= null}" class="std-btn" type="submit" value="Update Order">
             </div>
         </form>
     </div>

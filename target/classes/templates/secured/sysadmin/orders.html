@@ -25,8 +25,9 @@
         </nav>
     </div>
     <h2>List of the Orders</h2>
+    <br>
     <div>
-        <p><a th:if="${userAuthResponse} != null" href="/pizzamgm/api/v1/orders/new">Add New Order</a></p>
+        <p><a th:if="${userAuthResponse} == null" href="/pizzamgm/api/v1/orders/new">Add New Order</a></p>
     </div>
     <section>
         <table class="data-grid">
@@ -37,7 +38,7 @@
                 <th>Order Date</th>
                 <th>Total Price</th>
                 <th>Order Lines</th>
-                <div th:if="${userAuthResponse} != null">
+                <div th:if="${userAuthResponse} == null">
                     <th></th>
                     <th></th>
                 </div>

@@ -49,20 +49,21 @@ public class CustomerController {
     @GetMapping(value = {"/new"})
     public ModelAndView displayNewCustomerForm(Model model) {
         var modelAndView = new ModelAndView();
-        var newCustomer = new CustomerRequest(null,null,null,null,null,null,
-                new AddressRequest(null,null,null,null,null));
-//        var newAddress = new AddressRequest(null,null,null,null,null);
-//        model.addAttribute("address", newAddress);
+        var newCustomer = new CustomerAddressRequest(null,null,null,null,null,null,
+                null,null,null,null,null);
         model.addAttribute("customer", newCustomer);
         modelAndView.setViewName("secured/sysadmin/customer/new");
         return modelAndView;
     }
 
     @PostMapping("/add")
-    public ModelAndView addNewOCustomer(@Valid @ModelAttribute CustomerRequest customerRequest){
+    public ModelAndView addNewOCustomer(@Valid @ModelAttribute CustomerAddressRequest customerRequest){
         var modelAndView = new ModelAndView();
-        System.out.println(customerRequest);
-        customerService.addCustomer(customerRequest);
+        var customer = new CustomerRequest(null, customerRequest.firstName(),
+                customerRequest.lastName(), customerRequest.phoneNumber(), customerRequest.email(),
+                customerRequest.birthDate(), new AddressRequest(null, customerRequest.street(),
+                customerRequest.city(), customerRequest.state(), customerRequest.zipCode()));
+        customerService.addCustomer(customer);
         var customers = customerService.getAllCustomer();
         modelAndView.addObject("customers", customers);
         modelAndView.setViewName("secured/sysadmin/customers");
@@ -78,17 +79,22 @@ public class CustomerController {
     public ModelAndView displayEditCustomerForm(@PathVariable Integer customerId) throws CustomerNotFoundException {
         var modelAndView = new ModelAndView();
         var customer = customerService.getCustomerById(customerId);
-        var newAddress = customer.address();
-        modelAndView.addObject("address", newAddress);
-        modelAndView.addObject("customer", customer);
+        var customerR = new CustomerAddressRequest(customer.customerId(), customer.firstName(), customer.lastName(),
+                customer.phoneNumber(), customer.email(), customer.birthDate(), customer.address().addressId(),
+                customer.address().street(), customer.address().city(), customer.address().state(), customer.address().zipCode());
+        modelAndView.addObject("customer", customerR);
         modelAndView.setViewName("secured/sysadmin/customer/edit");
         return modelAndView;
     }
 
     @PostMapping("/update")
-    public ModelAndView updateCustomerById(@Valid @ModelAttribute CustomerRequest customerRequest) throws CustomerNotFoundException {
+    public ModelAndView updateCustomerById(@Valid @ModelAttribute CustomerAddressRequest customerRequest) throws CustomerNotFoundException {
         var modelAndView = new ModelAndView();
-        customerService.updateCustomerById(customerRequest.getCustomerId(), customerRequest);
+        var customer = new CustomerRequest(customerRequest.customerId(), customerRequest.firstName(),
+                customerRequest.lastName(), customerRequest.phoneNumber(), customerRequest.email(),
+                customerRequest.birthDate(), new AddressRequest(customerRequest.addressId(), customerRequest.street(),
+                customerRequest.city(), customerRequest.state(), customerRequest.zipCode()));
+        customerService.updateCustomerById(customerRequest.customerId(), customer);
         var customers = customerService.getAllCustomer();
         modelAndView.addObject("customers", customers);
         modelAndView.setViewName("secured/sysadmin/customers");

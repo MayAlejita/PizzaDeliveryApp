@@ -26,8 +26,9 @@
     </div>
 
     <h2>List of our Pizzas</h2>
+    <br>
     <div>
-        <p><a th:if="${userAuthResponse} != null" href="/pizzamgm/api/v1/pizzas/new">Add New Pizza</a></p>
+        <p><a th:if="${userAuthResponse} == null" href="/pizzamgm/api/v1/pizzas/new">Add New Pizza</a></p>
     </div>
     <table class="data-grid">
         <thead>
@@ -50,7 +51,7 @@
             <td th:text="${pizza.type()}"></td>
             <td th:text="${pizza.size()}"></td>
             <td th:text="${pizza.price()}"></td>
-            <div th:if="${userAuthResponse} != null">
+            <div th:if="${userAuthResponse} == null">
             <td><a th:href="@{'/pizzamgm/api/v1/pizzas/edit/{pizzaId}'(pizzaId=${pizza.pizzaId()})}">Edit</a></td>
             <td><a th:href="@{'/pizzamgm/api/v1/pizzas/delete/{pizzaId}'(pizzaId=${pizza.pizzaId()})}">Delete</a></td>
             </div>

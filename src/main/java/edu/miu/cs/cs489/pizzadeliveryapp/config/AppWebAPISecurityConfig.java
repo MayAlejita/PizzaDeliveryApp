@@ -50,9 +50,10 @@ public class AppWebAPISecurityConfig {
                                     .requestMatchers("/pizzamgm/api/v1/orders/new").permitAll()
                                     .requestMatchers("/pizzamgm/api/v1/orders/add").permitAll()
                                     .requestMatchers("/pizzamgm/api/v1/orders/list").permitAll()
-                                    .requestMatchers("/pizzamgm/api/v1/orders/edit").hasRole("MANAGER")
-                                    .requestMatchers("/pizzamgm/api/v1/orders/update").hasRole("MANAGER")
-                                    .requestMatchers("/pizzamgm/api/v1/orders/delete").hasRole("MANAGER")
+                                    .requestMatchers("/pizzamgm/api/v1/orders/**").permitAll()
+//                                    .requestMatchers("/pizzamgm/api/v1/orders/edit").hasRole("MANAGER")
+//                                    .requestMatchers("/pizzamgm/api/v1/orders/update").hasRole("MANAGER")
+//                                    .requestMatchers("/pizzamgm/api/v1/orders/delete").hasRole("MANAGER")
                                     .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                                     .requestMatchers("/pizzamgm/api/v1/pizzas/**").permitAll();
 

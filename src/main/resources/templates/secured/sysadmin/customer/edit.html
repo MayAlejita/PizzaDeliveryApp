@@ -15,7 +15,7 @@
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
 <main>
-    <h1>Edit Pizza Form</h1>
+    <h1>Edit Customer Form</h1>
     <div style="border: 1px solid;padding: 1em;">
         <div>
             Fields marked with asterisk (*) are required.
@@ -23,6 +23,8 @@
         <form method="post" action="/pizzamgm/api/v1/customers/update" th:object="${customer}">
             <input name="customerId" type="hidden" th:value="${customer.customerId()}">
 <!--            <input name="address" type="hidden" th:object="${address}">-->
+
+            <input name="customerId" type="text" th:value="${customer}">
             <fieldset>
                 <div>
                     <label>First Name*</label>
@@ -63,31 +65,31 @@
                     <label>Street*</label>
                 </div>
                 <div>
-                    <input name="street" type="text" th:value="${customer.address().street()}">
+                    <input name="street" type="text" th:value="*{street()}">
                 </div>
                 <div>
                     <label>City*</label>
                 </div>
                 <div>
-                    <input name="city" type="text" th:value="*{address().city()}">
+                    <input name="city" type="text" th:value="*{city()}">
                 </div>
                 <div>
                     <label>State*</label>
                 </div>
                 <div>
-                    <input name="state" type="text" th:value="*{address().state()}">
+                    <input name="state" type="text" th:value="*{state()}">
                 </div>
                 <div>
                     <label>Zip Code</label>
                 </div>
                 <div>
-                    <input name="zipCode" type="text" th:value="*{address().zipCode()}">
+                    <input name="zipCode" type="text" th:value="*{zipCode()}">
                 </div>
             </fieldset>
             <div style="margin-top: 1em;">
                 <a class="std-lnk-btn" href="/pizzamgm/api/v1/customers">Cancel</a>
                 <input class="std-btn" type="reset" value="Reset">
-                <input class="std-btn" type="submit" value="Update Pizza">
+                <input class="std-btn" type="submit" value="Update Customer">
             </div>
         </form>
     </div>

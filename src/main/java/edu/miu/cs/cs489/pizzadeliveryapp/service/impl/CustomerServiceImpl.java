@@ -72,49 +72,16 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-//    public CustomerResponse addCustomer(CustomerRequest customerRequest) {
-//        Customer newCustomer = new Customer(null,
-//                customerRequest.firstName(), customerRequest.lastName(),
-//                customerRequest.phoneNumber(), customerRequest.email(),
-//                customerRequest.birthDate(),
-//                customerRequest.address() != null ? new Address(null,
-//                        customerRequest.address().street(),
-//                        customerRequest.address().city(),
-//                        customerRequest.address().street(),
-//                        customerRequest.address().zipCode()
-//                ) : null);
-//        Customer customer = customerRepository.save(newCustomer);
-//        return new CustomerResponse(
-//                customer.getCustomerId(), customer.getFirstName(),
-//                customer.getLastName(), customer.getPhoneNumber(),
-//                customer.getEmail(), customer.getBirthDate(),
-//                customer.getAddress() != null ? new AddressResponse(
-//                        customer.getAddress().getAddressId(),
-//                        customer.getAddress().getStreet(),
-//                        customer.getAddress().getCity(),
-//                        customer.getAddress().getState(),
-//                        customer.getAddress().getZipCode()
-//                ) : null,
-//                customer.getOrders() != null ? customer.getOrders().stream()
-//                        .map(o -> new OrderResponse(
-//                                o.getOrderNumber(),
-//                                o.getOrderDate(),
-//                                o.getStatus(),
-//                                o.getTotalPrice()
-//                        )).toList() : null
-//        );
-//    }
-
     public CustomerResponse addCustomer(CustomerRequest customerRequest) {
         Customer newCustomer = new Customer(null,
-                customerRequest.getFirstName(), customerRequest.getLastName(),
-                customerRequest.getPhoneNumber(), customerRequest.getEmail(),
-                customerRequest.getBirthDate(),
-                customerRequest.getAddress() != null ? new Address(null,
-                        customerRequest.getAddress().getStreet(),
-                        customerRequest.getAddress().getCity(),
-                        customerRequest.getAddress().getStreet(),
-                        customerRequest.getAddress().getZipCode()
+                customerRequest.firstName(), customerRequest.lastName(),
+                customerRequest.phoneNumber(), customerRequest.email(),
+                customerRequest.birthDate(),
+                customerRequest.address() != null ? new Address(null,
+                        customerRequest.address().street(),
+                        customerRequest.address().city(),
+                        customerRequest.address().street(),
+                        customerRequest.address().zipCode()
                 ) : null);
         Customer customer = customerRepository.save(newCustomer);
         return new CustomerResponse(
@@ -138,78 +105,29 @@ public class CustomerServiceImpl implements CustomerService {
         );
     }
 
-//    @Override
-//    public CustomerResponse updateCustomerById(Integer customerId, CustomerRequest customerRequest) throws CustomerNotFoundException {
-//        Customer customer = customerRepository.findById(customerId).orElse(null);
-//        if(customer == null) {
-//            throw new CustomerNotFoundException(String.format("Error: Customer with Id, %d, is not found", customerId));
-//        }
-//        customer.setFirstName(customerRequest.firstName());
-//        customer.setLastName(customerRequest.lastName());
-//        customer.setPhoneNumber(customerRequest.phoneNumber());
-//        customer.setEmail(customerRequest.email());
-//        customer.setBirthDate(customerRequest.birthDate());
-//        if (customer.getAddress() != null && customerRequest.address() != null) {
-//            var address = customer.getAddress();
-//            address.setStreet(customerRequest.address().street());
-//            address.setCity(customerRequest.address().city());
-//            address.setState(customerRequest.address().state());
-//            address.setZipCode(customerRequest.address().zipCode());
-//        } else if (customer.getAddress() == null && customerRequest.address() != null) {
-//            var newAddress = new Address();
-//            newAddress.setStreet(customerRequest.address().street());
-//            newAddress.setCity(customerRequest.address().city());
-//            newAddress.setState(customerRequest.address().state());
-//            newAddress.setZipCode(customerRequest.address().zipCode());
-//            customer.setAddress(newAddress);
-//        } else {
-//            customer.setAddress(null);
-//        }
-//        Customer updateCustomer = customerRepository.save(customer);
-//        return new CustomerResponse(
-//                updateCustomer.getCustomerId(), updateCustomer.getFirstName(),
-//                updateCustomer.getLastName(), updateCustomer.getPhoneNumber(),
-//                updateCustomer.getEmail(), updateCustomer.getBirthDate(),
-//                updateCustomer.getAddress() != null ? new AddressResponse(
-//                        updateCustomer.getAddress().getAddressId(),
-//                        updateCustomer.getAddress().getStreet(),
-//                        updateCustomer.getAddress().getCity(),
-//                        updateCustomer.getAddress().getState(),
-//                        updateCustomer.getAddress().getZipCode()
-//                ) : null,
-//                updateCustomer.getOrders() != null ? updateCustomer.getOrders().stream()
-//                        .map(o -> new OrderResponse(
-//                                o.getOrderNumber(),
-//                                o.getOrderDate(),
-//                                o.getStatus(),
-//                                o.getTotalPrice()
-//                        )).toList() : null
-//        );
-//    }
-
     @Override
     public CustomerResponse updateCustomerById(Integer customerId, CustomerRequest customerRequest) throws CustomerNotFoundException {
         Customer customer = customerRepository.findById(customerId).orElse(null);
         if(customer == null) {
             throw new CustomerNotFoundException(String.format("Error: Customer with Id, %d, is not found", customerId));
         }
-        customer.setFirstName(customerRequest.getFirstName());
-        customer.setLastName(customerRequest.getLastName());
-        customer.setPhoneNumber(customerRequest.getPhoneNumber());
-        customer.setEmail(customerRequest.getEmail());
-        customer.setBirthDate(customerRequest.getBirthDate());
-        if (customer.getAddress() != null && customerRequest.getAddress() != null) {
+        customer.setFirstName(customerRequest.firstName());
+        customer.setLastName(customerRequest.lastName());
+        customer.setPhoneNumber(customerRequest.phoneNumber());
+        customer.setEmail(customerRequest.email());
+        customer.setBirthDate(customerRequest.birthDate());
+        if (customer.getAddress() != null && customerRequest.address() != null) {
             var address = customer.getAddress();
-            address.setStreet(customerRequest.getAddress().getStreet());
-            address.setCity(customerRequest.getAddress().getCity());
-            address.setState(customerRequest.getAddress().getState());
-            address.setZipCode(customerRequest.getAddress().getZipCode());
-        } else if (customer.getAddress() == null && customerRequest.getAddress() != null) {
+            address.setStreet(customerRequest.address().street());
+            address.setCity(customerRequest.address().city());
+            address.setState(customerRequest.address().state());
+            address.setZipCode(customerRequest.address().zipCode());
+        } else if (customer.getAddress() == null && customerRequest.address() != null) {
             var newAddress = new Address();
-            newAddress.setStreet(customerRequest.getAddress().getStreet());
-            newAddress.setCity(customerRequest.getAddress().getCity());
-            newAddress.setState(customerRequest.getAddress().getState());
-            newAddress.setZipCode(customerRequest.getAddress().getZipCode());
+            newAddress.setStreet(customerRequest.address().street());
+            newAddress.setCity(customerRequest.address().city());
+            newAddress.setState(customerRequest.address().state());
+            newAddress.setZipCode(customerRequest.address().zipCode());
             customer.setAddress(newAddress);
         } else {
             customer.setAddress(null);

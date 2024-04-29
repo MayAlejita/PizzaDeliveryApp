@@ -2,6 +2,7 @@ package edu.miu.cs.cs489.pizzadeliveryapp.service.impl;
 
 import edu.miu.cs.cs489.pizzadeliveryapp.dto.request.OrderLineRequest;
 import edu.miu.cs.cs489.pizzadeliveryapp.dto.request.OrderRequest;
+import edu.miu.cs.cs489.pizzadeliveryapp.dto.request.PizzaRequest2;
 import edu.miu.cs.cs489.pizzadeliveryapp.dto.response.*;
 import edu.miu.cs.cs489.pizzadeliveryapp.exception.CustomerNotFoundException;
 import edu.miu.cs.cs489.pizzadeliveryapp.exception.OrderNotFoundException;
@@ -62,17 +63,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponse2 getOrderById(Long orderId) throws OrderNotFoundException {
+    public OrderResponse3 getOrderById(Long orderId) throws OrderNotFoundException {
         Order order = orderRepository.findById(orderId).orElse(null);
         if(order == null) {
             throw new OrderNotFoundException(String.format("Error: Order with Id, %d, is not found", orderId));
         }
-        return new OrderResponse2(
+        return new OrderResponse3(
                 order.getOrderNumber(), order.getOrderDate(),
                 order.getStatus(), order.getTotalPrice(),
                 order.getOrderLines() != null ? order.getOrderLines()
                         .stream()
-                        .map(or -> new OrderLineResponse(
+                        .map(or -> new OrderLineResponse3(
                                 or.getOrderLineId(), or.getQuantity(),
                                 or.getPrice(), or.getDeliveryDate(),
                                 or.getPizza() != null ? new PizzaResponse(
@@ -119,19 +120,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponse2 addOrderByCustomerId(Integer customerId, OrderRequest orderRequest) throws CustomerNotFoundException {
+    public OrderResponse3 addOrderByCustomerId(Integer customerId, OrderRequest orderRequest) throws CustomerNotFoundException {
         Customer customer = customerRepository.findById(customerId).orElse(null);
         if(customer == null) {
             throw new CustomerNotFoundException(String.format("Error: Customer with Id, %d, is not found", customerId));
         }
 
-        Order order = new Order(null, orderRequest.orderDate(),
-                orderRequest.status(), orderRequest.totalPrice(),
+        Order order = new Order(null, orderRequest.getOrderDate(),
+                orderRequest.getStatus(), orderRequest.getTotalPrice(),
                 customer, null);
 
         Order newOrder = orderRepository.save(order);
 
-        List<OrderLine> orderLines = orderRequest.orderLines().stream()
+        List<OrderLine> orderLines = orderRequest.getOrderLines().stream()
                 .map(ol -> new OrderLine(null, ol.quantity(),
                         ol.price(), ol.deliveryDate(), newOrder, new Pizza(ol.pizza().pizzaId(),
                         ol.pizza().name(), ol.pizza().type(), ol.pizza().size(),
@@ -139,12 +140,11 @@ public class OrderServiceImpl implements OrderService {
                 ).toList();
 
         List<OrderLine> orderL = orderLineRepository.saveAll(orderLines);
-
-        return new OrderResponse2(
+        return  new OrderResponse3(
                 newOrder.getOrderNumber(), newOrder.getOrderDate(),
                 newOrder.getStatus(), newOrder.getTotalPrice(),
                 orderL.stream()
-                        .map(or -> new OrderLineResponse(
+                        .map(or -> new OrderLineResponse3(
                                 or.getOrderLineId(), or.getQuantity(),
                                 or.getPrice(), or.getDeliveryDate(),
                                 or.getPizza() != null ? new PizzaResponse(
@@ -166,9 +166,9 @@ public class OrderServiceImpl implements OrderService {
         if(order == null) {
             throw new OrderNotFoundException(String.format("Error: Order with Id, %d, is not found", orderId));
         }
-        order.setOrderDate(orderRequest.orderDate());
-        order.setStatus(orderRequest.status());
-        order.setTotalPrice(orderRequest.totalPrice());
+        order.setOrderDate(orderRequest.getOrderDate());
+        order.setStatus(orderRequest.getStatus());
+        order.setTotalPrice(orderRequest.getTotalPrice());
         Order updatedOrder = orderRepository.save(order);
 
         return new OrderResponse2(
@@ -202,7 +202,7 @@ public class OrderServiceImpl implements OrderService {
             throw new OrderNotFoundException(String.format("Error: Order status with Id, %d, is not availability to update", orderId));
         }
 
-        order.setStatus(orderRequest.status());
+        order.setStatus(orderRequest.getStatus());
         Order updatedOrder = orderRepository.save(order);
 
         return new OrderResponse2(
@@ -253,5 +253,11 @@ public class OrderServiceImpl implements OrderService {
                             })
                 )
                 .toList();
+    }
+
+    @Override
+    public void addOrderLine(OrderRequest order) {
+        order.getOrderLines().add(new OrderLineRequest(null,null,null,null,
+                new PizzaRequest2(null,null,null,null,null,null)));
     }
 }

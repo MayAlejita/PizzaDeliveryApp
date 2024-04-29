@@ -5,6 +5,7 @@ import edu.miu.cs.cs489.pizzadeliveryapp.dto.request.OrderRequest;
 import edu.miu.cs.cs489.pizzadeliveryapp.dto.request.PizzaRequest;
 import edu.miu.cs.cs489.pizzadeliveryapp.dto.request.PizzaRequest2;
 import edu.miu.cs.cs489.pizzadeliveryapp.dto.response.OrderResponse2;
+import edu.miu.cs.cs489.pizzadeliveryapp.dto.response.OrderResponse3;
 import edu.miu.cs.cs489.pizzadeliveryapp.dto.response.PizzaOrderResponse;
 import edu.miu.cs.cs489.pizzadeliveryapp.dto.response.PizzaResponse2;
 import edu.miu.cs.cs489.pizzadeliveryapp.exception.CustomerNotFoundException;
@@ -47,7 +48,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderResponse2> getOrderById(@PathVariable Long orderId) throws OrderNotFoundException {
+    public ResponseEntity<OrderResponse3> getOrderById(@PathVariable Long orderId) throws OrderNotFoundException {
         return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
@@ -77,25 +78,21 @@ public class OrderController {
         return modelAndView;
     }
 
-    @RequestMapping(value="/add", params={"addRow"})
-    public String addRow(final OrderLineRequest orderLine, final BindingResult bindingResult) {
-        System.out.println(orderLine);
-//        order.orderLines().add(new OrderLineRequest(null,null, null, null));
-        return "orderline";
+    @PostMapping(value="/addOrderLine")
+    public String addOrderLine(OrderRequest order) {
+        orderService.addOrderLine(order);
+        return "secured/sysadmin/order/edit";
     }
 
-    @RequestMapping(value="/orderline", params={"removeRow"})
-    public String removeRow(
-            final OrderRequest seedStarter, final BindingResult bindingResult,
-            final HttpServletRequest req) {
-        final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
-        seedStarter.orderLines().remove(rowId.intValue());
-        return "orderline";
+    @PostMapping("/removeOrderLine")
+    public String removeOrderLine(OrderRequest order, @RequestParam("removeOrderLine") Integer orderLineId){
+        order.getOrderLines().remove(orderLineId.intValue());
+        return "secured::sysadmin::order::edit";
     }
 
 
     @PostMapping("/new/{customerId}")
-    public ResponseEntity<OrderResponse2> addNewOrder(@PathVariable Integer customerId, @RequestBody @Valid OrderRequest orderRequest) throws CustomerNotFoundException {
+    public ResponseEntity<OrderResponse3> addNewOrder(@PathVariable Integer customerId, @RequestBody @Valid OrderRequest orderRequest) throws CustomerNotFoundException {
         return new ResponseEntity<>(orderService.addOrderByCustomerId(customerId, orderRequest), HttpStatus.CREATED);
     }
 
@@ -111,15 +108,7 @@ public class OrderController {
     @PostMapping("/update")
     public ModelAndView updateOrderById(@Valid @ModelAttribute  OrderRequest order) throws OrderNotFoundException {
         var modelAndView = new ModelAndView();
-//        OrderRequest orderRequest = new OrderRequest(order.orderNumber(), order.orderDate(), order.status(),
-//                order.totalPrice(), order.orderLines().stream().map(
-//                        ol-> new OrderLineRequest(ol.orderLineId(), ol.quantity(),
-//                                ol.price(), ol.deliveryDate(), new PizzaRequest2(ol.pizza().pizzaId(),
-//                                ol.pizza().name(), ol.pizza().type(), ol.pizza().size(), ol.pizza().price(),
-//                                ol.pizza().additionalDetails())
-//                        )
-//        ).toList());
-        orderService.updateOrderById(order.orderNumber(), order);
+        orderService.updateOrderById(order.getOrderNumber(), order);
         var orders = orderService.getAllOrders();
         modelAndView.addObject("orders", orders);
         modelAndView.setViewName("secured/sysadmin/orders");
